@@ -1,9 +1,23 @@
 package com.solvd.api.utils;
 
+import java.io.IOException;
+
+import static com.solvd.api.utils.TokenUtil.getToken;
+
 public class Constants {
 
     // request info
-    public static final String TOKEN = "4bee5262a4e3426a5e3473442e31be4d23163e870a900b66b8366fbcd294bcdb"; //TODO get token from a config file
+    public static final String TOKEN;
+
+    static {
+        try {
+            TOKEN = getToken();
+        } catch (IOException e) {
+            System.out.println("Token not found!" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     public static final String BASE_URL = "https://gorest.co.in/public/v2";
     public static final String USERS_ENDPOINT = "/users";
     public static final String GRAPHQL_ENDPOINT = "/graphql";
