@@ -64,20 +64,20 @@ public class RestApiTest extends BaseApiTest {
     }
 
     @Test
-    public void verifyPartiallyModifyAUserTest() {
+    public void verifyUpdateUserPartiallyTest() {
         User user = createAUser();
         Map.Entry<String, String> name = Map.entry("name", "Joe");
-        Response response = requests.partiallyModifyAUser(user.getId(), name);
+        Response response = requests.updateUserPartially(user.getId(), name);
         assertStatusCode(response, 200)
                 .body("name", equalTo(name.getValue()));
         response.body().prettyPrint();
     }
 
     @Test
-    public void verifyFullyModifyAUserTest() {
+    public void verifyUpdateUserFullyTest() {
         User user = createAUser();
         User modifiedUser = Files.getAUserFromAJsonFile("update-user.json");
-        Response response = requests.fullyModifyAUser(user.getId(), modifiedUser);
+        Response response = requests.updateUserFully(user.getId(), modifiedUser);
         assertStatusCode(response, 200)
                 .body("name", equalTo(modifiedUser.getName()));
         response.body().prettyPrint();

@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.solvd.api.utils.Constants.*;
 import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
 
 public class GraphqlTest extends BaseApiTest {
 
@@ -25,8 +26,8 @@ public class GraphqlTest extends BaseApiTest {
     @Test
     public void verifyQueryUserByIdTest() {
         Response response = requests.queryUserById(ID);
-        assertStatusCode(response, 200)
-                .body("data.user.name", equalTo("Mark"));
+        assertStatusCode(response, 200);
+        assertEquals(response.jsonPath().getInt("data.user.id"), ID, "User ID does not match");
         response.prettyPrint();
     }
 

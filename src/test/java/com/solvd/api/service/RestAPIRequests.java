@@ -11,13 +11,13 @@ import static io.restassured.RestAssured.given;
 
 public class RestAPIRequests {
 
-    public Response partiallyModifyAUser(int id, Map.Entry<String, String> value) {
+    public Response updateUserPartially(int id, Map.Entry<String, String> value) {
         return getRequest()
                 .body(value)
                 .patch(USERS_ENDPOINT + "/" + id);
     }
 
-    public Response fullyModifyAUser(int userId, User user) {
+    public Response updateUserFully(int userId, User user) {
         return getRequest()
                 .body(user)
                 .put(USERS_ENDPOINT + "/" + userId);
