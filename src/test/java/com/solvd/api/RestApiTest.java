@@ -29,7 +29,6 @@ public class RestApiTest extends BaseApiTest {
         assertStatusCode(response, 200);
         int userListSize = response.body().jsonPath().getList("", User.class).size();
         Assert.assertTrue(userListSize >= 10, "List size is less than 10: " + userListSize);
-        response.body().prettyPrint();
     }
 
     @Test
@@ -38,7 +37,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.getUserById(user.getId());
         assertStatusCode(response, 200)
                 .body("id", equalTo(user.getId()));
-        response.body().prettyPrint();
     }
 
     @Test
@@ -46,7 +44,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.createAUserWithoutSendingBearerToken();
         assertStatusCode(response, 401)
                 .body("message", equalTo(AUTHENTICATION_FAILED));
-        response.body().prettyPrint();
     }
 
     @Test
@@ -60,7 +57,6 @@ public class RestApiTest extends BaseApiTest {
         Assert.assertEquals(resUser.getEmail(), user.getEmail(), "Response email is not the expected!");
         Assert.assertEquals(resUser.getGender(), user.getGender(), "Response gender is not the expected!");
         Assert.assertEquals(resUser.getStatus(), user.getStatus(), "Response status is not the expected!");
-        response.body().prettyPrint();
     }
 
     @Test
@@ -70,7 +66,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.updateUserPartially(user.getId(), name);
         assertStatusCode(response, 200)
                 .body("name", equalTo(name.getValue()));
-        response.body().prettyPrint();
     }
 
     @Test
@@ -80,7 +75,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.updateUserFully(user.getId(), modifiedUser);
         assertStatusCode(response, 200)
                 .body("name", equalTo(modifiedUser.getName()));
-        response.body().prettyPrint();
     }
 
     @Test
@@ -88,7 +82,6 @@ public class RestApiTest extends BaseApiTest {
         User user = createAUser();
         Response response = requests.deleteAUser(user);
         assertStatusCode(response, 204);
-        response.prettyPeek();
     }
 
     @Test
@@ -97,7 +90,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.createAUser(user);
         ValidatableResponse validatableResponse = assertStatusCode(response, 422);
         validateErrorMessageOnEmailField(validatableResponse, ALREADY_BEEN_TAKEN);
-        response.body().prettyPrint();
     }
 
     @Test
@@ -107,7 +99,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.deleteAUser(user);
         assertStatusCode(response, 404)
                 .body("message", equalTo(RESOURCE_NOT_FOUND));
-        response.body().prettyPrint();
     }
 
     @Test
@@ -117,7 +108,6 @@ public class RestApiTest extends BaseApiTest {
         Response response = requests.createAUser(user);
         ValidatableResponse validatableResponse = assertStatusCode(response, 422);
         validateErrorMessageOnEmailField(validatableResponse, IS_INVALID);
-        response.body().prettyPrint();
     }
 
     //helper methods

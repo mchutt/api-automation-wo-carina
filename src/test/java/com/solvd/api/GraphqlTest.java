@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static com.solvd.api.utils.Constants.*;
-import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
 public class GraphqlTest extends BaseApiTest {
@@ -28,16 +27,14 @@ public class GraphqlTest extends BaseApiTest {
         Response response = requests.queryUserById(ID);
         assertStatusCode(response, 200);
         assertEquals(response.jsonPath().getInt("data.user.id"), ID, "User ID does not match");
-        response.prettyPrint();
     }
 
     @Test
     public void verifyCreateAUserTest() {
         User user = Files.getAUserFromAJsonFile("create-user.json");
         Response response = requests.createAUser(user);
-        assertStatusCode(response, 200)
-                .body("data.createUser.user.name", equalTo(user.getName()));
-        response.prettyPrint();
+        assertStatusCode(response, 200);
+        assertEquals(response.jsonPath().getString("data.createUser.user.name"), user.getName(), "User Name does not match");
     }
 
     @Test
@@ -46,7 +43,6 @@ public class GraphqlTest extends BaseApiTest {
         assertStatusCode(response, 200);
         List<User> userList = response.body().jsonPath().getList("data.users.nodes", User.class);
         Assert.assertFalse(userList.isEmpty(), "User list is empty");
-        response.prettyPrint();
     }
 
     @Test
@@ -54,10 +50,9 @@ public class GraphqlTest extends BaseApiTest {
         User user = Files.getAUserFromAJsonFile("create-user.json");
         user.setEmail(INVALID_EMAIL);
         Response response = requests.createAUser(user);
-        assertStatusCode(response, 200)
-                .body("errors[0].extensions.result[0].fieldName", equalTo("email"))
-                .body("errors[0].extensions.result[0].messages[0]", equalTo(IS_INVALID));
-        response.prettyPrint();
+        assertStatusCode(response, 200);
+        assertEquals(response.jsonPath().getString("errors[0].extensions.result[0].fieldName"), "email", "Field do not match");
+        assertEquals(response.jsonPath().getString("errors[0].extensions.result[0].messages[0]"), IS_INVALID, "Error message does not match");
     }
 
     @Test
@@ -66,6 +61,5 @@ public class GraphqlTest extends BaseApiTest {
         user = requests.createAUser(user).jsonPath().getObject("data.createUser.user", User.class);
         Response response = requests.deleteAUser(user);
         assertStatusCode(response, 200);
-        response.prettyPeek();
     }
 }
