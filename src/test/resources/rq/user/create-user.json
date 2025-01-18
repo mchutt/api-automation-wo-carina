@@ -1,0 +1,6 @@
+{
+  "name": "Mark",
+  "email": "{{random_string}}@company.com",
+  "gender": "male",
+  "status": "active"
+}
