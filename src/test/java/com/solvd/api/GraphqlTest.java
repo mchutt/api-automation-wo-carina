@@ -24,9 +24,17 @@ public class GraphqlTest extends BaseApiTest {
 
     @Test
     public void verifyQueryUserByIdTest() {
-        Response response = requests.queryUserById(ID);
+        Response res = createUser();
+        String userId = res.jsonPath().getObject("data.createUser.user.id", String.class);
+
+        Response response = requests.queryUserById(userId);
         assertStatusCode(response, 200);
-        assertEquals(response.jsonPath().getInt("data.user.id"), ID, "User ID does not match");
+        assertEquals(response.jsonPath().getObject("data.user.id", String.class), userId, "User ID does not match");
+    }
+
+    private Response createUser() {
+        User user = Files.getAUserFromAJsonFile("create-user.json");
+        return requests.createAUser(user);
     }
 
     @Test
