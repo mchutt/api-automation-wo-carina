@@ -22,7 +22,6 @@ public class Constants {
 
     public static final String INVALID_EMAIL = "invalidemail";
     public static final int NON_EXISTENT_USER_ID = 1;
-    public static final int ID = 7636782;
 
 
     // error messages
